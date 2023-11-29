@@ -23,19 +23,6 @@ if 'chat_history' not in st.session_state:                                      
 if "messages" not in st.session_state:                                                                                      # Creating messages list in session state if not existed
     st.session_state.messages = []
 
-for message in st.session_state["messages"]:
-    if message["role"] == "user":
-                                                                                                                            # Display a user message in the chat interface
-        with st.chat_message("user"):
-            st.markdown(message["content"])
-    elif message["role"] == "assistant":
-                                                                                                                            # Display an assistant message in the chat interface
-        with st.chat_message("assistant"):
-            st.markdown(message["content"])
-
-
-
-
 
 with st.sidebar:
     st.header("Interview Chat bot")
@@ -57,13 +44,15 @@ def main():
     else:   
         with st.chat_message("assistant"):
             st.write(f"Hi {name}") 
-            st.write(f" Here's you question for this particular role ")
-        # response=st.chat_input("Enter your response")
-        with st.chat_message("assistant"):
-            
             chat_response=get_chat_response(options)
-            st.markdown(chat_response)
-
+            # st.markdown(chat_response)
+        for message in st.session_state["messages"]:
+            if message["role"] == "user":                                                                                                             # Display a user message in the chat interface
+                    st.write('👤:',message["content"])
+            elif message["role"] == "assistant":
+                                                                                                                                    # Display an assistant message in the chat interface
+                    st.write('🤖:',message["content"])
+    
 def get_chat_response(user_message):
     messages = load_messages()
     messages.append({"role": "user", "content": user_message})
